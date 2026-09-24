@@ -30,10 +30,16 @@ def youtube_downloader():
 
     try:
         options = {
-            "quiet": False,
-            "skip_download": True,
-            "noplaylist": True,
-        }
+                "format": "best[ext=mp4]/best",
+                "outtmpl": "/tmp/downloads/%(title)s.%(ext)s",
+                "noplaylist": True,
+                "js_runtimes": {
+                    "deno": {}
+                },
+                "remote_components": {
+                    "ejs": ["github"]
+                },
+            }
 
         with yt_dlp.YoutubeDL(options) as ydl:
             info = ydl.extract_info(url, download=False)
