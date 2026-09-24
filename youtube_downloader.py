@@ -3,7 +3,7 @@ import yt_dlp
 url = input("Enter YouTube URL: ").strip()
 
 options = {
-    "format": "bestvideo+bestaudio/best",
+    "format": "best[ext=mp4]/best",
     "merge_output_format": "mp4",
     "outtmpl": "%(title)s.%(ext)s",
 }
