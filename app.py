@@ -20,32 +20,36 @@ def test():
 @app.route("/youtube-downloader", methods=["POST"])
 def youtube_downloader():
 
-    url = request.form.get("url")
+     url = request.form.get("url")
 
     if not url:
         return jsonify({
             "success": False,
-            "message": "YouTube URL is required"
+            "message": "URL is required"
         }), 400
 
-    options = {
-        "format": "bestvideo+bestaudio/best",
-        "merge_output_format": "mp4",
-        "outtmpl": "%(title)s.%(ext)s"
-    }
-
     try:
+        options = {
+            "quiet": False,
+            "skip_download": True,
+            "noplaylist": True,
+        }
+
         with yt_dlp.YoutubeDL(options) as ydl:
-            ydl.download([url])
+            info = ydl.extract_info(url, download=False)
 
         return jsonify({
             "success": True,
-            "message": "Download completed"
+            "id": info.get("id"),
+            "title": info.get("title"),
+            "duration": info.get("duration"),
+            "webpage_url": info.get("webpage_url")
         })
 
     except Exception as e:
         return jsonify({
             "success": False,
+            "error_type": type(e).__name__,
             "message": str(e)
         }), 500
         
