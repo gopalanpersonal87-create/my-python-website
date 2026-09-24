@@ -1,10 +1,20 @@
 from flask import Flask, request, jsonify
+import yt_dlp
+import os
+
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
     return "<h1>Hello! My Python Website is Working!</h1>"
+    
+
+@app.route("/test")
+def test():
+    return {
+        "yt_dlp_version": yt_dlp.version.__version__
+    }
 
 
 @app.route("/youtube-downloader", methods=["POST"])
